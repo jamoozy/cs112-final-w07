@@ -1,10 +1,13 @@
+#include <math.h>
 #include <signal.h>
 #include <sys/types.h>
 #include "inputModule.h"
 #include "PLY.h"
 
 /* This File contains the KeyBoard and mouse handling routines */
-
+#ifdef _WIN32
+#define M_PI 3.14159265358979
+#endif
 
 static int motionMode;
 static int startX;
@@ -24,23 +27,29 @@ extern PLYObject* ply;
 
 void readKeyboard(unsigned char key, int x, int y)
 {
+	float a1 = angle1 * M_PI / 180.0f;
+	float a2 = angle2 * M_PI / 180.0f;
 	switch(key)
 	{
 		case 'w':
 		case 'W':
-			current_pos[2] -= move_speed;
+			current_pos[0] -= move_speed * sin(a1);
+			current_pos[2] += move_speed * cos(a1);
 			break;
 		case 'a':
 		case 'A':
-			current_pos[0] -= move_speed;
+			current_pos[0] += move_speed * cos(a1);
+			current_pos[2] += move_speed * sin(a1);
 			break;
 		case 's':
 		case 'S':
-			current_pos[2] += move_speed;
+			current_pos[0] += move_speed * sin(a1);
+			current_pos[2] -= move_speed * cos(a1);
 			break;
 		case 'd':
 		case 'D':
-			current_pos[0] += move_speed;
+			current_pos[0] -= move_speed * cos(a1);
+			current_pos[2] -= move_speed * sin(a1);
 			break;
 		case  0x1B:
 		case  'q':
@@ -131,14 +140,14 @@ void mouseMoveHandler(int x, int y)
 			break;
 
 		case 2:
-			current_pos[0] = current_pos[0] - (x - startX)/100.0;
-			current_pos[1] = current_pos[1] - (y - startY)/100.0;
+//			current_pos[0] = current_pos[0] - (x - startX)/100.0;
+//			current_pos[1] = current_pos[1] - (y - startY)/100.0;
 			startX = x;
 			startY = y;
 			break;
 
 		case 3:
-			current_pos[2] = current_pos[2] - (y - startY)/10.0;
+//			current_pos[2] = current_pos[2] - (y - startY)/10.0;
 			startX = x;
 			startY = y;
 			break;
@@ -152,7 +161,7 @@ void setUserView()
 {
 	glLoadIdentity();
 
-	glTranslatef(-current_pos[0], current_pos[1], -current_pos[2]);
 	glRotatef(angle2, 1.0, 0.0, 0.0);
 	glRotatef(angle1, 0.0, 1.0, 0.0);
+	glTranslatef(current_pos[0], current_pos[1], current_pos[2]);
 }
