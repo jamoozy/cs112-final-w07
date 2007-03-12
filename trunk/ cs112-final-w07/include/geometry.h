@@ -70,5 +70,6 @@ void multMatrix(Matrix4f m, const Matrix4f m1, const Matrix4f m2);
 
 // apply 4x4 matrix to 3D vector
 void multVector(Vector3f u, const Matrix4f m, const Vector3f v);
+void multVector(Vector4d u, const Matrix4d m, const Vector4d v);
 
 #endif
