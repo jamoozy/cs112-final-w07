@@ -1,8 +1,10 @@
+#include <stdio.h>
 #include <math.h>
 #include <signal.h>
 #include <sys/types.h>
 #include "inputModule.h"
-#include "PLY.h"
+#include "bouncer.h"
+#include "debug.h"
 
 /* This File contains the KeyBoard and mouse handling routines */
 #ifdef _WIN32
@@ -18,53 +20,80 @@ static GLfloat angle2 = 0;   /* in degrees */
 
 GLfloat current_pos[] = {0.0, 0.0, 0.0};
 GLfloat move_speed = 0.25;
+GLfloat rot_speed = 0.25;
 
 int wire = 0;
 int flat = 0;
 int light = 1;
 
-extern PLYObject* ply;
+extern Bouncer *bouncer;
+extern bool running_mode;
 
 void readKeyboard(unsigned char key, int x, int y)
 {
-	float a1 = angle1 * M_PI / 180.0f;
-	float a2 = angle2 * M_PI / 180.0f;
-	switch(key)
+	if (running_mode == kay)
 	{
-		case 'w':
-		case 'W':
-			current_pos[0] -= move_speed * sin(a1);
-			current_pos[2] += move_speed * cos(a1);
-			break;
-		case 'a':
-		case 'A':
-			current_pos[0] += move_speed * cos(a1);
-			current_pos[2] += move_speed * sin(a1);
-			break;
-		case 's':
-		case 'S':
-			current_pos[0] += move_speed * sin(a1);
-			current_pos[2] -= move_speed * cos(a1);
-			break;
-		case 'd':
-		case 'D':
-			current_pos[0] -= move_speed * cos(a1);
-			current_pos[2] -= move_speed * sin(a1);
-			break;
-		case  0x1B:
-		case  'q':
-		case  'Q':
-			exit(0);
-			break; 
-		case 'r':
-		case 'R':
-			// reset initial view parameters
-			angle1 = 20;
-			angle2 = 30;
-			current_pos[0] = 0.0;
-			current_pos[1] = 0.0;
-			current_pos[2] = 0.0;
-			break;
+		float a1 = angle1 * M_PI / 180.0f;
+//		float a2 = angle2 * M_PI / 180.0f;
+		switch(key)
+		{
+			case 'w':
+			case 'W':
+				current_pos[0] -= move_speed * sin(a1);
+				current_pos[2] += move_speed * cos(a1);
+				break;
+			case 'a':
+			case 'A':
+				current_pos[0] += move_speed * cos(a1);
+				current_pos[2] += move_speed * sin(a1);
+				break;
+			case 's':
+			case 'S':
+				current_pos[0] += move_speed * sin(a1);
+				current_pos[2] -= move_speed * cos(a1);
+				break;
+			case 'd':
+			case 'D':
+				current_pos[0] -= move_speed * cos(a1);
+				current_pos[2] -= move_speed * sin(a1);
+				break;
+			case  0x1B:
+			case  'q':
+			case  'Q':
+				exit(0);
+				break; 
+			case 'r':
+			case 'R':
+				// reset initial view parameters
+				printf("pos:[%2.1f,%2.1f,%2.1f]\n", current_pos[0], current_pos[1], current_pos[2]);
+				angle1 = 0;
+				angle2 = 0;
+				current_pos[0] = 0.0;
+				current_pos[1] = 0.0;
+				current_pos[2] = -20.0;
+				trace(__FILE__,__LINE__,"Resetting...\n",0);
+				break;
+		}
+	}
+	else
+	{
+		switch (key)
+		{
+			case 's':
+			case 'S':
+				debug("Starting to fall...\n");
+				bouncer->start();
+				break;
+			case 'r':
+			case 'R':
+				debug("Resetting...\n");
+				bouncer->reset();
+			case  0x1B:
+			case  'q':
+			case  'Q':
+				exit(0);
+				break; 
+		}
 	}
 	glutPostRedisplay();
 }
@@ -127,32 +156,52 @@ void mouseMoveHandler(int x, int y)
 {
 
 	// No mouse button is pressed... return 
-	switch(motionMode){
-		case 0:
-			return;
-			break;
+	if (running_mode == kay)
+	{
+		switch(motionMode)
+		{
+			case 0:
+				return;
+				break;
 
-		case 1: // Calculate the rotations
-			angle1 = angle1 + (x - startX);
-			angle2 = angle2 + (y - startY);
-			startX = x;
-			startY = y;
-			break;
+			case 1: // Calculate the rotations
+				angle1 += rot_speed * (x - startX);
+				angle2 += rot_speed * (y - startY);
+				startX = x;
+				startY = y;
+				break;
 
-		case 2:
-//			current_pos[0] = current_pos[0] - (x - startX)/100.0;
-//			current_pos[1] = current_pos[1] - (y - startY)/100.0;
-			startX = x;
-			startY = y;
-			break;
+			case 2:
+				current_pos[0] = current_pos[0] - (x - startX)/100.0;
+				current_pos[1] = current_pos[1] - (y - startY)/100.0;
+				startX = x;
+				startY = y;
+				break;
 
-		case 3:
-//			current_pos[2] = current_pos[2] - (y - startY)/10.0;
-			startX = x;
-			startY = y;
-			break;
+			case 3:
+				current_pos[2] = current_pos[2] - (y - startY)/10.0;
+				startX = x;
+				startY = y;
+				break;
+		}
 	}
-
+	else
+	{
+		switch(motionMode)
+		{
+			case 0:
+				return;
+				break;
+			case 1:
+				if (!bouncer->running())
+					bouncer->rotate(y-startY, x-startX);
+			case 2:
+			case 3:
+				startX = x;
+				startY = y;
+				break;
+		}
+	}
 	glutPostRedisplay();
 }
 

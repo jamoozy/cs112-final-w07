@@ -9,6 +9,9 @@
 #endif
 
 
+#define andrew true
+#define kay false
+
 extern GLfloat current_pos[];
 
 #ifdef __cplusplus
