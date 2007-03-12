@@ -23,30 +23,34 @@
 #include "viewModule.h"
 #include "inputModule.h"
 #include "cube.h"
+#include "bouncer.h"
 #include "PLY.h"
 #include "geometry.h"
 
 int window;
 int updateFlag;
 
-PLYObject *ply;
+bool running_mode = kay;
+
+Bouncer *bouncer;
 
 perspectiveData pD;
 
-Vector4f initial_light_pos = {-100.0, 100.0, 100.0, 0.0};
+Vector4f initial_light_pos = {-10.0, 10.0, 10.0, 1.0};
 Vector4f ambient_light = {0.3, 0.3, 0.3, 1.0};
 Vector4f light_color = {0.6, 0.6, 0.6, 1.0};
 Vector4f black_color = {0.0, 0.0, 0.0, 1.0};
 
 Vector3f light_pos, viewer_pos;
 
+extern GLfloat current_pos[3];
 
 void cleanup(int sig)
 {
 	// insert cleanup code here (i.e. deleting structures or so)
 	//fprintf(stderr,"Cleaning up\n");
-	if (ply)
-		delete(ply);
+	if (bouncer)
+		delete(bouncer);
 	exit(0);
 }
 
@@ -77,12 +81,18 @@ void display(void)
 	multVector(light_pos, m, initial_light_pos);
 	multVector(viewer_pos, m, current_pos);
 
-	/**************  TRYME-2 **************/
+	//drawCube();
+	
+	glColor3f(0,1,0);
+	glBegin(GL_QUADS);
+		glVertex3f(50, Bouncer::FLOOR, 50);
+		glVertex3f(-50, Bouncer::FLOOR, 50);
+		glVertex3f(-50, Bouncer::FLOOR, -50);
+		glVertex3f(50, Bouncer::FLOOR, -50);
+	glEnd();
 
-	/* Enable rendering of the PLY when present, or the cube otherwise. */
-
-	if (ply)
-		ply->draw();
+	if (running_mode == andrew)
+		bouncer->draw();
 	else
 		drawCube();
 
@@ -117,14 +127,14 @@ void initDisplay()
 	glClearDepth(1);
 
 	// setup lights
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black_color);
 	glLightfv(GL_LIGHT0, GL_POSITION, initial_light_pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_color);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_color);
-
-	//glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
 }
 
 //##########################################
@@ -134,31 +144,29 @@ int main(int argc, char **argv)
 {
 
 	//signal(SIGHUP, cleanup);
+	// Set up which demo we're going to run:
+	if (argc > 1 && argv[1][0] == '-' && argv[1][0] == 'a')
+	{
+		running_mode = andrew;
+		current_pos[0] = 0;
+		current_pos[1] = 0;
+		current_pos[2] = -20;
+	}
+	else
+	{
+		running_mode = kay;
+		current_pos[0] = 0;
+		current_pos[1] = 0;
+		current_pos[2] = 0;
+	}
 
 	glutInit(&argc, argv);
 
-	/**************  TRYME-1 **************/
+	if (running_mode == andrew)
+		bouncer = new Bouncer();
+	else
+		bouncer = NULL;
 
-	/* Uncomment this section to accept an input filename (of a PLY file)
-	   from the command line using the argc and argv parameters.
-	   Also creates a new PLY Object from the .ply file */
-
-	FILE *in;
-	char *filename;
-	if (argc < 2) {
-		fprintf(stderr, "Usage: %s filename\n", argv[0]);
-		fprintf(stderr, "\tfilename is of PLY triangle mesh format\n");
-		exit(1);
-	}
-
-	filename = argv[1];
-	if (!(in = fopen(filename, "r"))) {
-		fprintf(stderr, "Cannot open input file %s.\n", filename);
-		exit(1);
-	}
-
-	ply = new PLYObject(in);
-	ply->resize();
 	srand(time(NULL));
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -171,7 +179,7 @@ int main(int argc, char **argv)
 	glutMouseFunc(mouseButtHandler);
 	glutMotionFunc(mouseMoveHandler);
 	glutPassiveMotionFunc(mouseMoveHandler);
-	glutIdleFunc(NULL);
+	glutIdleFunc(display);
 
 	initDisplay();
 
