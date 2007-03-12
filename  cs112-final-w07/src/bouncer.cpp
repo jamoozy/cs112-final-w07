@@ -34,78 +34,55 @@ Bouncer::Bouncer() : gravity_works(false)
 	colors[5][2] = 0.8;
 	colors[5][3] = 1.0;
 
-	vertexes[0][0][0] = -1.0;
-	vertexes[0][0][1] = -1.0;
-	vertexes[0][0][2] = -1.0;
-	vertexes[0][1][0] = -1.0;
-	vertexes[0][1][1] = -1.0;
-	vertexes[0][1][2] = 1.0;
-	vertexes[0][2][0] = -1.0;
-	vertexes[0][2][1] = 1.0;
-	vertexes[0][2][2] = 1.0;
-	vertexes[0][3][0] = -1.0;
-	vertexes[0][3][1] = 1.0;
-	vertexes[0][3][2] = -1.0;
-	vertexes[1][0][0] = 1.0;
-	vertexes[1][0][1] = 1.0;
-	vertexes[1][0][2] = 1.0;
-	vertexes[1][1][0] = 1.0;
-	vertexes[1][1][1] = -1.0;
-	vertexes[1][1][2] = 1.0;
-	vertexes[1][2][0] = 1.0;
-	vertexes[1][2][1] = -1.0;
-	vertexes[1][2][2] = -1.0;
-	vertexes[1][3][0] = 1.0;
-	vertexes[1][3][1] = 1.0;
-	vertexes[1][3][2] = -1.0;
-	vertexes[2][0][0] = -1.0;
-	vertexes[2][0][1] = -1.0;
-	vertexes[2][0][2] = -1.0;
-	vertexes[2][1][0] = 1.0;
-	vertexes[2][1][1] = -1.0;
-	vertexes[2][1][2] = -1.0;
-	vertexes[2][2][0] = 1.0;
-	vertexes[2][2][1] = -1.0;
-	vertexes[2][2][2] = 1.0;
-	vertexes[2][3][0] = -1.0;
-	vertexes[2][3][1] = -1.0;
-	vertexes[2][3][2] = 1.0;
-	vertexes[3][0][0] = 1.0;
-	vertexes[3][0][1] = 1.0;
-	vertexes[3][0][2] = 1.0;
-	vertexes[3][1][0] = 1.0;
-	vertexes[3][1][1] = 1.0;
-	vertexes[3][1][2] = -1.0;
-	vertexes[3][2][0] = -1.0;
-	vertexes[3][2][1] = 1.0;
-	vertexes[3][2][2] = -1.0;
-	vertexes[3][3][0] = -1.0;
-	vertexes[3][3][1] = 1.0;
-	vertexes[3][3][2] = 1.0;
-	vertexes[4][0][0] = -1.0;
-	vertexes[4][0][1] = -1.0;
-	vertexes[4][0][2] = -1.0;
-	vertexes[4][1][0] = -1.0;
-	vertexes[4][1][1] = 1.0;
-	vertexes[4][1][2] = -1.0;
-	vertexes[4][2][0] = 1.0;
-	vertexes[4][2][1] = 1.0;
-	vertexes[4][2][2] = -1.0;
-	vertexes[4][3][0] = 1.0;
-	vertexes[4][3][1] = -1.0;
-	vertexes[4][3][2] = -1.0;
-	vertexes[5][0][0] = 1.0;
-	vertexes[5][0][1] = 1.0;
-	vertexes[5][0][2] = 1.0;
-	vertexes[5][1][0] = -1.0;
-	vertexes[5][1][1] = 1.0;
-	vertexes[5][1][2] = 1.0;
-	vertexes[5][2][0] = -1.0;
-	vertexes[5][2][1] = -1.0;
-	vertexes[5][2][2] = 1.0;
-	vertexes[5][3][0] = 1.0;
-	vertexes[5][3][1] = -1.0;
-	vertexes[5][3][2] = 1.0;
+	faces[0][0] = 7;
+	faces[0][1] = 6;
+	faces[0][2] = 4;
+	faces[0][3] = 5;
+	faces[1][0] = 0;
+	faces[1][1] = 2;
+	faces[1][2] = 3;
+	faces[1][3] = 1;
+	faces[2][0] = 7;
+	faces[2][1] = 3;
+	faces[2][2] = 2;
+	faces[2][3] = 6;
+	faces[3][0] = 0;
+	faces[3][1] = 1;
+	faces[3][2] = 5;
+	faces[3][3] = 4;
+	faces[4][0] = 7;
+	faces[4][1] = 5;
+	faces[4][2] = 1;
+	faces[4][3] = 3;
+	faces[5][0] = 0;
+	faces[5][1] = 4;
+	faces[5][2] = 6;
+	faces[5][3] = 2;
+
+	vertexes[0][0] = 1.0f;
+	vertexes[0][1] = 1.0f;
+	vertexes[0][2] = 1.0f;
+	vertexes[1][0] = 1.0f;
+	vertexes[1][1] = 1.0f;
+	vertexes[1][2] = -1.0f;
+	vertexes[2][0] = 1.0f;
+	vertexes[2][1] = -1.0f;
+	vertexes[2][2] = 1.0f;
+	vertexes[3][0] = 1.0f;
+	vertexes[3][1] = -1.0f;
+	vertexes[3][2] = -1.0f;
+	vertexes[4][0] = -1.0f;
+	vertexes[4][1] = 1.0f;
+	vertexes[4][2] = 1.0f;
+	vertexes[5][0] = -1.0f;
+	vertexes[5][1] = 1.0f;
+	vertexes[5][2] = -1.0f;
+	vertexes[6][0] = -1.0f;
+	vertexes[6][1] = -1.0f;
+	vertexes[6][2] = 1.0f;
+	vertexes[7][0] = -1.0f;
+	vertexes[7][1] = -1.0f;
+	vertexes[7][2] = -1.0f;
 
 	collision[0] = false;
 	collision[1] = false;
@@ -122,7 +99,7 @@ void Bouncer::reset()
 	gravity_works = false;
 
 	pos[0] = 0;
-	pos[1] = 8;
+	pos[1] = 5;
 	pos[2] = 0;
 
 	velocity[0] = 0;
@@ -131,13 +108,18 @@ void Bouncer::reset()
 
 	angle[0] = 0;   // angle around y-axis.
 	angle[1] = 0;   // angle around x-axis.
+	angle[2] = 0;
+
+	a_velocity[0] = 0;
+	a_velocity[1] = 0;
+	a_velocity[2] = 0;
 }
 
 // Add the given values to the x- and y-roatations.
 void Bouncer::rotate(double x, double y)
 {
-	angle[0] += y;
-	angle[1] += x;
+	angle[0] += x;
+	angle[1] += y;
 }
 
 void Bouncer::start()
@@ -164,8 +146,6 @@ bool Bouncer::running()
 
 void Bouncer::collide()
 {
-//	double factor = (sin(angle[0]) + cos(angle[0])) * (sin(angle[1]) + cos(angle[1]);
-
 	Matrix4d m;
 	double M[16];
 	glGetDoublev(GL_MODELVIEW_MATRIX, M);
@@ -175,7 +155,6 @@ void Bouncer::collide()
 
 	Vector4d out;
 	Vector4d in;
-
 
 	int collisions = 0;
 	int index = 0;
@@ -216,6 +195,58 @@ void Bouncer::collide()
 	{
 		velocity[1] = -velocity[1];
 	}
+	else if (collisions == 2)
+	{
+		int i, v[2];
+
+		for (i = 0; i < 8; i++)
+			if (collision[i])
+			{
+				v[0] = i;
+				break;
+			}
+
+		for (; i < 8; i++)
+			if (collision[i])
+			{
+				v[1] = i;
+				break;
+			}
+
+		if (vertexes[v[0]][0] != vertexes[v[1]][0])
+		{
+			//a_velocity[0] += 
+
+//			if (vertexes[v[0]][1] > 0)
+//			{
+//				if (vertexes[v[0]][2] > 0)
+//				{
+//				}
+//				else
+//				{
+//				}
+//			}
+//			else
+//			{
+//				if (vertexes[v[0]][2] > 0)
+//				{
+//				}
+//				else
+//				{
+//				}
+//			}
+		}
+		else if (vertexes[v[0]][1] != vertexes[v[1]][1])
+		{
+		}
+		else
+		{
+		}
+	}
+	else if (collisions == 1)
+	{
+		
+	}
 
 //	if (collision[0]
 //	 || collision[1]
@@ -240,9 +271,14 @@ void Bouncer::physics()
 	//printf("clock:%d\n", clock());
 	// Only execute this 30 time per second
 	if (gravity_works) velocity[1] += G;
+
 	pos[0] += velocity[0];
 	pos[1] += velocity[1];
 	pos[2] += velocity[2];
+
+	angle[0] += a_velocity[0];
+	angle[1] += a_velocity[1];
+	angle[2] += a_velocity[2];
 }
 
 
@@ -253,10 +289,10 @@ void Bouncer::placeVertexes()
 	for (int i = 0; i < 6; i++)
 	{
 		glColor3dv(&colors[i][0]);
-		glVertex3dv(&vertexes[i][0][0]);
-		glVertex3dv(&vertexes[i][1][0]);
-		glVertex3dv(&vertexes[i][2][0]);
-		glVertex3dv(&vertexes[i][3][0]);
+		glVertex3dv(&vertexes[faces[i][0]][0]);
+		glVertex3dv(&vertexes[faces[i][1]][0]);
+		glVertex3dv(&vertexes[faces[i][2]][0]);
+		glVertex3dv(&vertexes[faces[i][3]][0]);
 	}
 	glEnd();
 }
@@ -274,9 +310,11 @@ void Bouncer::draw()
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
+
 	glTranslated(pos[0], pos[1], pos[2]);
-	glRotated(angle[1], 1,0,0);
-	glRotated(angle[0], 0,1,0);
+	glRotated(angle[0], 1,0,0);
+	glRotated(angle[1], 0,1,0);
+	glRotated(angle[2], 0,0,1);
 
 	collide();
 	physics();
