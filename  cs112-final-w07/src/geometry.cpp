@@ -344,3 +344,15 @@ void multVector(Vector3f u, const Matrix4f m, const Vector3f v)
     u[j] = tmp;
   }
 }
+
+void multVector(Vector4d u, const Matrix4d m, const Vector4d v)
+{
+  int i, j;
+
+  for (j = 0; j < 4; j++) {
+    u[j] = 0.0;
+    for (i = 0; i < 4; i++)
+      u[j] += v[i] * m[i][j];
+  }
+}
+
