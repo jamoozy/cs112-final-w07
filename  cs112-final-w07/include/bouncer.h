@@ -18,12 +18,16 @@ class Bouncer
 
 	private:
 		double colors[6][4];
-		double vertexes[6][4][3];
+		double vertexes[8][3]; // 8 vertexes with 3 coordinates each.
+		int faces[6][4];    // 6 faces w/ 4 vertecies each.
+		                    // Instead of storing the coordinates
+							// of the vertexes, it stores the index
+							// of the vertex.
 
-		double pos[3];      // Position of this Bouncer
-		double velocity[3]; // x, y, z velocities
-		double angle[2];    // The angles showing how much rotation the Bouncer has.
-		double a_velocity[3]; // Angular velocity
+		double pos[3];        // Position of this Bouncer
+		double velocity[3];   // x, y, z velocities
+		double angle[2];      // The angles showing how much rotation the Bouncer has.
+		double a_velocity[2]; // Angular velocity
 
 		double collision[8]; // Points of collision
 
