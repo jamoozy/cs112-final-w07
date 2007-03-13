@@ -83,16 +83,19 @@ void display(void)
 
 	//drawCube();
 	
-	glColor3f(0,1,0);
-	glBegin(GL_QUADS);
-		glVertex3f(50, Bouncer::FLOOR, 50);
-		glVertex3f(-50, Bouncer::FLOOR, 50);
-		glVertex3f(-50, Bouncer::FLOOR, -50);
-		glVertex3f(50, Bouncer::FLOOR, -50);
-	glEnd();
 
 	if (running_mode == andrew)
+	{
+		// Draw the ground floor.
+		glColor3f(0,1,0);
+		glBegin(GL_QUADS);
+			glVertex3f(pD.farPlane, Bouncer::FLOOR, pD.farPlane);
+			glVertex3f(-pD.farPlane, Bouncer::FLOOR, pD.farPlane);
+			glVertex3f(-pD.farPlane, Bouncer::FLOOR, -pD.farPlane);
+			glVertex3f(pD.farPlane, Bouncer::FLOOR, -pD.farPlane);
+		glEnd();
 		bouncer->draw();
+	}
 	else
 		drawCube();
 
@@ -109,7 +112,7 @@ void initDisplay()
 	pD.fieldOfView = 45.0;
 	pD.aspect      = (float)IMAGE_WIDTH/IMAGE_HEIGHT;
 	pD.nearPlane   = 0.1;
-	pD.farPlane    = 50.0;
+	pD.farPlane    = 500.0;
 
 	// setup context
 	glMatrixMode(GL_PROJECTION);
