@@ -276,12 +276,16 @@ void Bouncer::collide()
 			// FIXME: This case does not yet work.
 			debug("Along z-axis.\n");
 
-			double dx = center[0] - vertex1[0];
 			double dy = center[1] - vertex1[1];
+			double dz = center[2] - vertex1[2];
 
-			a_velocity[2] += dx / 1.414;
+			if (debugon) printf("dy: %1.4f\ndz: %1.4f\n", dy, dz);
+
+			a_velocity[2] += dz / 1.414;
 			velocity[1] *= -(dy / 1.414);
-			velocity[2] += (dx / 40);
+			velocity[2] += (dz / 40);
+
+			if (debugon) printf("a-v{z}: %1.4f\nangle: %1.4f\n", a_velocity[2], angle[2]);
 		}
 		else
 		{
@@ -291,24 +295,31 @@ void Bouncer::collide()
 			{
 				printf("%2.1f,%2.1f,%2.1f\n",vertexes[v[0]][0],vertexes[v[0]][0],vertexes[v[0]][0]);
 				printf("%2.1f,%2.1f,%2.1f\n",vertexes[v[1]][0],vertexes[v[1]][0],vertexes[v[1]][0]);
-
-printf("collisions: [%d,%d,%d,%d,%d,%d,%d,%d]\n",
-(collision[0])? 1 : 0,
-(collision[1])? 1 : 0,
-(collision[2])? 1 : 0,
-(collision[3])? 1 : 0,
-(collision[4])? 1 : 0,
-(collision[5])? 1 : 0,
-(collision[6])? 1 : 0,
-(collision[7])? 1 : 0);
-
-
 			}
 		}
 	}
 	else if (collisions == 1)
 	{
-		
+		int i, v;
+
+		for (i++; i < 8; i++)
+			if (collision[i])
+			{
+				v = i;
+				break;
+			}
+
+		Vector4d vertex, center;
+		in[0] = vertexes[v[0]][0];
+		in[1] = vertexes[v[0]][1];
+		in[2] = vertexes[v[0]][2];
+		multVector(vertex, m, in);
+
+		in[0] = in[1] = in[2] = 0;
+		multVector(center, m, in);
+
+
+
 	}
 
 //	if (collision[0]

@@ -26,10 +26,10 @@ class Bouncer
 
 		double pos[3];        // Position of this Bouncer
 		double velocity[3];   // x, y, z velocities
-		double angle[2];      // The angles showing how much rotation the Bouncer has.
-		double a_velocity[2]; // Angular velocity
+		double angle[3];      // The angles showing how much rotation the Bouncer has.
+		double a_velocity[3]; // Angular velocity
 
-		double collision[8]; // Points of collision
+		double collision[8];  // Points of collision
 
 		bool gravity_works;
 
