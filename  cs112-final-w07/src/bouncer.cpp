@@ -1,9 +1,13 @@
 #include <GL/gl.h>
+#include <math.h>
 #include <time.h>
 #include <stdio.h>
 #include "bouncer.h"
 #include "geometry.h"
 #include "debug.h"
+
+const double Bouncer::FLOOR = -5;
+const double Bouncer::G = -.001;
 
 Bouncer::Bouncer() : gravity_works(false)
 {
@@ -146,6 +150,8 @@ bool Bouncer::running()
 
 void Bouncer::collide()
 {
+	trace(__FILE__,__LINE__,"Bouncer::collide()",1);
+
 	Matrix4d m;
 	double M[16];
 	glGetDoublev(GL_MODELVIEW_MATRIX, M);
@@ -153,8 +159,8 @@ void Bouncer::collide()
 		for (int j = 0; j < 4; j++)
 			m[i][j] = M[i*4+j];
 
-	Vector4d out;
-	Vector4d in;
+	Vector4d out = {0,0,0,1};
+	Vector4d in  = {0,0,0,1};
 
 	int collisions = 0;
 	int index = 0;
@@ -165,7 +171,6 @@ void Bouncer::collide()
 				in[0] = i;
 				in[1] = j;
 				in[2] = k;
-				in[3] = 1;
 
 				multVector(out, m, in);
 //				if (time(0) > 5 + last_time[index]) {
@@ -191,9 +196,15 @@ void Bouncer::collide()
 //	if (pos[1] - 1 < FLOOR)
 //		velocity[1] = -velocity[1];
 
+	if (collisions) printf("%d collisions\n", collisions);
+
 	if (collisions == 4)
 	{
-		velocity[1] = -velocity[1];
+		if (velocity[1] < .001) {
+			stop();
+			pos[1] = 1;
+		} else
+			velocity[1] = -velocity[1];
 	}
 	else if (collisions == 2)
 	{
@@ -206,41 +217,82 @@ void Bouncer::collide()
 				break;
 			}
 
-		for (; i < 8; i++)
+		for (i++; i < 8; i++)
 			if (collision[i])
 			{
 				v[1] = i;
 				break;
 			}
 
+		Vector4d vertex1, /*vertex2,*/ center;
+		in[0] = vertexes[v[0]][0];
+		in[1] = vertexes[v[0]][1];
+		in[2] = vertexes[v[0]][2];
+		multVector(vertex1, m, in);
+
+//		in[0] = vertexes[v[1]][0];
+//		in[1] = vertexes[v[1]][1];
+//		in[2] = vertexes[v[1]][2];
+//		multVector(vertex2, m, in);
+
+		in[0] = in[1] = in[2] = 0;
+		multVector(center, m, in);
+
 		if (vertexes[v[0]][0] != vertexes[v[1]][0])
 		{
-			//a_velocity[0] += 
+			debug("Along x-axis.\n");
 
-//			if (vertexes[v[0]][1] > 0)
-//			{
-//				if (vertexes[v[0]][2] > 0)
-//				{
-//				}
-//				else
-//				{
-//				}
-//			}
-//			else
-//			{
-//				if (vertexes[v[0]][2] > 0)
-//				{
-//				}
-//				else
-//				{
-//				}
-//			}
+			double dy = center[1] - vertex1[1];
+			double dz = center[2] - vertex1[2];
+
+			a_velocity[0] += dz / 1.414;
+			velocity[1] *= -(dy / 1.414);
+			velocity[2] += (dz / 40);
 		}
 		else if (vertexes[v[0]][1] != vertexes[v[1]][1])
 		{
+			debug("Along y-axis.\n");
+
+			double dx = center[0] - vertex1[0];
+			double dy = center[1] - vertex1[1];
+
+			a_velocity[1] -= dx / 1.414;
+			velocity[1] *= -(dy / 1.414);
+			velocity[0] += (dx / 40);
+		}
+		else if (vertexes[v[0]][2] != vertexes[v[1]][2])
+		{
+			// FIXME: This case does not yet work.
+			debug("Along z-axis.\n");
+
+			double dx = center[0] - vertex1[0];
+			double dy = center[1] - vertex1[1];
+
+			a_velocity[2] += dx / 1.414;
+			velocity[1] *= -(dy / 1.414);
+			velocity[2] += (dx / 40);
 		}
 		else
 		{
+			debug("Along no axis???\n");
+
+			if (debugon)
+			{
+				printf("%2.1f,%2.1f,%2.1f\n",vertexes[v[0]][0],vertexes[v[0]][0],vertexes[v[0]][0]);
+				printf("%2.1f,%2.1f,%2.1f\n",vertexes[v[1]][0],vertexes[v[1]][0],vertexes[v[1]][0]);
+
+printf("collisions: [%d,%d,%d,%d,%d,%d,%d,%d]\n",
+(collision[0])? 1 : 0,
+(collision[1])? 1 : 0,
+(collision[2])? 1 : 0,
+(collision[3])? 1 : 0,
+(collision[4])? 1 : 0,
+(collision[5])? 1 : 0,
+(collision[6])? 1 : 0,
+(collision[7])? 1 : 0);
+
+
+			}
 		}
 	}
 	else if (collisions == 1)
@@ -263,11 +315,13 @@ void Bouncer::collide()
 
 	collision[0] = collision[1] = collision[2] = collision[3] = collision[4] = collision[5] = collision[6] = collision[7] = false;
 	collisions = 0;
+	trace(__FILE__,__LINE__,"~Bouncer::collide()",-1);
 }
 
 // Make the physics of the world work.
 void Bouncer::physics()
 {
+	trace(__FILE__,__LINE__,"Bouncer::phyics()",1);
 	//printf("clock:%d\n", clock());
 	// Only execute this 30 time per second
 	if (gravity_works) velocity[1] += G;
@@ -279,6 +333,8 @@ void Bouncer::physics()
 	angle[0] += a_velocity[0];
 	angle[1] += a_velocity[1];
 	angle[2] += a_velocity[2];
+
+	trace(__FILE__,__LINE__,"~Bouncer::phyics()",-1);
 }
 
 
@@ -315,6 +371,7 @@ void Bouncer::draw()
 	glRotated(angle[0], 1,0,0);
 	glRotated(angle[1], 0,1,0);
 	glRotated(angle[2], 0,0,1);
+//	glScaled(5,5,5);
 
 	collide();
 	physics();
