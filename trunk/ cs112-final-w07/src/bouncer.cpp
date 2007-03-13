@@ -138,6 +138,10 @@ void Bouncer::stop()
 	velocity[0] = 0;
 	velocity[1] = 0;
 	velocity[2] = 0;
+
+	a_velocity[0] = 0;
+	a_velocity[1] = 0;
+	a_velocity[2] = 0;
 }
 
 bool Bouncer::running()
@@ -197,12 +201,12 @@ void Bouncer::collide()
 //		velocity[1] = -velocity[1];
 
 	if (collisions) printf("%d collisions\n", collisions);
-
 	if (collisions == 4)
 	{
-		if (velocity[1] < .001) {
+		if (debugon) printf("y-speed: %.4f\n", velocity[1]);
+		if (-0.005 < velocity[1]) {
 			stop();
-			pos[1] = 1;
+			pos[1] = Bouncer::FLOOR + 1;
 		} else
 			velocity[1] = -velocity[1];
 	}
