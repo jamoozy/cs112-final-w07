@@ -13,8 +13,8 @@ class Bouncer
 		void rotate(double, double);
 
 //		static const double RT2 = 1.414;  // The square root of 2
-		static const double FLOOR = 0;   // Position of the floor (y-coordinate)
-		static const double G = -.001;    // Effect of gravity.
+		static const double FLOOR;   // Position of the floor (y-coordinate)
+		static const double G;    // Effect of gravity.
 
 	private:
 		double colors[6][4];
