@@ -7,9 +7,6 @@
 #include "debug.h"
 
 /* This File contains the KeyBoard and mouse handling routines */
-#ifdef _WIN32
-#define M_PI 3.14159265358979
-#endif
 
 static int motionMode;
 static int startX;
