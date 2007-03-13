@@ -241,11 +241,6 @@ void Bouncer::collide()
 		in[2] = vertexes[v[0]][2];
 		multVector(vertex1, m, in);
 
-//		in[0] = vertexes[v[1]][0];
-//		in[1] = vertexes[v[1]][1];
-//		in[2] = vertexes[v[1]][2];
-//		multVector(vertex2, m, in);
-
 		in[0] = in[1] = in[2] = 0;
 		multVector(center, m, in);
 
@@ -273,7 +268,6 @@ void Bouncer::collide()
 		}
 		else if (vertexes[v[0]][2] != vertexes[v[1]][2])
 		{
-			// FIXME: This case does not yet work.
 			debug("Along z-axis.\n");
 
 			double dy = center[1] - vertex1[1];
@@ -302,7 +296,7 @@ void Bouncer::collide()
 	{
 		int i, v;
 
-		for (i++; i < 8; i++)
+		for (i = 0; i < 8; i++)
 			if (collision[i])
 			{
 				v = i;
@@ -310,30 +304,14 @@ void Bouncer::collide()
 			}
 
 		Vector4d vertex, center;
-		in[0] = vertexes[v[0]][0];
-		in[1] = vertexes[v[0]][1];
-		in[2] = vertexes[v[0]][2];
+		in[0] = vertexes[v][0];
+		in[1] = vertexes[v][1];
+		in[2] = vertexes[v][2];
 		multVector(vertex, m, in);
 
 		in[0] = in[1] = in[2] = 0;
 		multVector(center, m, in);
-
-
-
 	}
-
-//	if (collision[0]
-//	 || collision[1]
-//	 || collision[2]
-//	 || collision[3]
-//	 || collision[4]
-//	 || collision[5]
-//	 || collision[6]
-//	 || collision[7])
-//	{
-//		debug("Stopping...\n");
-//		stop();
-//	}
 
 	collision[0] = collision[1] = collision[2] = collision[3] = collision[4] = collision[5] = collision[6] = collision[7] = false;
 	collisions = 0;
