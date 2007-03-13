@@ -88,6 +88,7 @@ void readKeyboard(unsigned char key, int x, int y)
 			case 'R':
 				debug("Resetting...\n");
 				bouncer->reset();
+				break;
 			case  0x1B:
 			case  'q':
 			case  'Q':
