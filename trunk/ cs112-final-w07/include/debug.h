@@ -10,7 +10,11 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 #include "geometry.h"
 
 #define debugon true
