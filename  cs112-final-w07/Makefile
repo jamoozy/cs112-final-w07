@@ -19,7 +19,7 @@ INC_DIRS = -I$(INCDIR) -I$(GLUT)/include
 GLLIBS = -lXext -lX11 -lm -lGLU -lGL -lpthread -lXmu -lglut -lXi -L/usr/X11R6/lib \
 				$(LDLIBDIRS:%=-L%)  -L$(GLUT)/lib  -L.
 
-CCFLAGS = -Wall -Wno-deprecated 
+CCFLAGS = -g -Wall -Wno-deprecated 
 
 TARGET = final
 
