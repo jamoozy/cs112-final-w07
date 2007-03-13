@@ -142,11 +142,13 @@ void initDisplay()
 
 int main(int argc, char **argv)
 {
+	if (argc > 1) printf("2nd param: %s\n", argv[1]);
 
 	//signal(SIGHUP, cleanup);
 	// Set up which demo we're going to run:
-	if (argc > 1 && argv[1][0] == '-' && argv[1][0] == 'a')
+	if (argc > 1 && argv[1][0] == '-' && argv[1][1] == 'a')
 	{
+		printf("Running mode is ANDREW\n");
 		running_mode = andrew;
 		current_pos[0] = 0;
 		current_pos[1] = 0;
@@ -154,6 +156,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
+		printf("Running mode is KAY\n");
 		running_mode = kay;
 		current_pos[0] = 0;
 		current_pos[1] = 0;
