@@ -6,6 +6,10 @@
  *   3D geometry vector operations
  */
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -127,7 +131,7 @@ float normalize(Vector3f n)
   float norm;
 
   norm = sqrt(dotProd(n, n));
-  scale(n, 1.0/norm);
+  scale(n, 1.0f/norm);
 
   return norm;
 }

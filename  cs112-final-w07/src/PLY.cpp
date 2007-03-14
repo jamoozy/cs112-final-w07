@@ -1,7 +1,3 @@
-// Andrew Correa
-// 60926645
-// acorrea@uci.edu
-
 /*
  *  PLY.cpp
  *  PointProcessing
@@ -15,6 +11,10 @@
 #include <string.h>
 #include <float.h>
 #include <math.h>
+
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 #ifdef __APPLE__
 #include <glut/glut.h>
@@ -335,10 +335,7 @@ void PLYObject::invertNormals()
 
 /**************  TRYME-3 **************/
 /* Make the appropriate change in this function to render the wireframe 
-   in Blue instead of black
-HINT: Colors in OpenGL are specified with 3 numbers.
-(RGB format, for red, green and blue.)
-*/
+   in Blue instead of black */
 
 void PLYObject::draw()
 {

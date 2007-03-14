@@ -117,9 +117,9 @@ void Bouncer::reset()
 	velocity[1] = 0;
 	velocity[2] = 0;
 
-	angle[0] = 0;   // angle around y-axis.
-	angle[1] = 0;   // angle around x-axis.
-	angle[2] = 0;
+	angle[0] = 0;   // angle around x-axis.
+	angle[1] = 0;   // angle around y-axis.
+	angle[2] = 0;   // angle around z-axis.
 
 	a_velocity[0] = 0;
 	a_velocity[1] = 0;
@@ -161,7 +161,7 @@ bool Bouncer::running()
 
 void Bouncer::collide()
 {
-	trace(__FILE__,__LINE__,"Bouncer::collide()",1);
+	trace(__FILE__,__LINE__,"Bouncer::collide()\n",1);
 
 	Matrix4d m;
 	double M[16];
@@ -235,11 +235,11 @@ void Bouncer::collide()
 				break;
 			}
 
-		Vector4d vertex1, /*vertex2,*/ center;
+		Vector4d vertex, center;
 		in[0] = vertexes[v[0]][0];
 		in[1] = vertexes[v[0]][1];
 		in[2] = vertexes[v[0]][2];
-		multVector(vertex1, m, in);
+		multVector(vertex, m, in);
 
 		in[0] = in[1] = in[2] = 0;
 		multVector(center, m, in);
@@ -248,8 +248,8 @@ void Bouncer::collide()
 		{
 			debug("Along x-axis.\n");
 
-			double dy = center[1] - vertex1[1];
-			double dz = center[2] - vertex1[2];
+			double dy = center[1] - vertex[1];
+			double dz = center[2] - vertex[2];
 
 			a_velocity[0] += dz / 1.414;
 			velocity[1] *= -(dy / 1.414);
@@ -259,8 +259,8 @@ void Bouncer::collide()
 		{
 			debug("Along y-axis.\n");
 
-			double dx = center[0] - vertex1[0];
-			double dy = center[1] - vertex1[1];
+			double dx = center[0] - vertex[0];
+			double dy = center[1] - vertex[1];
 
 			a_velocity[1] -= dx / 1.414;
 			velocity[1] *= -(dy / 1.414);
@@ -270,8 +270,8 @@ void Bouncer::collide()
 		{
 			debug("Along z-axis.\n");
 
-			double dy = center[1] - vertex1[1];
-			double dz = center[2] - vertex1[2];
+			double dy = center[1] - vertex[1];
+			double dz = center[2] - vertex[2];
 
 			if (debugon) printf("dy: %1.4f\ndz: %1.4f\n", dy, dz);
 
@@ -315,13 +315,13 @@ void Bouncer::collide()
 
 	collision[0] = collision[1] = collision[2] = collision[3] = collision[4] = collision[5] = collision[6] = collision[7] = false;
 	collisions = 0;
-	trace(__FILE__,__LINE__,"~Bouncer::collide()",-1);
+	trace(__FILE__,__LINE__,"~Bouncer::collide()\n",-1);
 }
 
 // Make the physics of the world work.
 void Bouncer::physics()
 {
-	trace(__FILE__,__LINE__,"Bouncer::phyics()",1);
+	trace(__FILE__,__LINE__,"Bouncer::phyics()\n",1);
 	//printf("clock:%d\n", clock());
 	// Only execute this 30 time per second
 	if (gravity_works) velocity[1] += G;
@@ -334,7 +334,7 @@ void Bouncer::physics()
 	angle[1] += a_velocity[1];
 	angle[2] += a_velocity[2];
 
-	trace(__FILE__,__LINE__,"~Bouncer::phyics()",-1);
+	trace(__FILE__,__LINE__,"~Bouncer::phyics()\n",-1);
 }
 
 
@@ -356,6 +356,8 @@ void Bouncer::placeVertexes()
 
 void Bouncer::draw()
 {
+	trace(__FILE__,__LINE__,"Bouncer::draw()\n",1);
+
 	glDisable(GL_BLEND);
 	glDisable(GL_POLYGON_SMOOTH);
 
@@ -378,4 +380,6 @@ void Bouncer::draw()
 	placeVertexes();
 
 	glPopMatrix();
+
+	trace(__FILE__,__LINE__,"~Bouncer::draw()\n",-1);
 }

@@ -9,15 +9,18 @@
 #endif
 
 
-#define andrew true
-#define kay false
-
 extern GLfloat current_pos[];
 
 #ifdef __cplusplus
 extern "C" {
 #endif
   
+//static GLfloat angle1 = 0;    /* in degrees */
+
+#define andrew true
+#define kay false
+
+
 void readKeyboard(unsigned char key, int x, int y);
 void readSpecialKeys(int key, int x, int y);
 void mouseButtHandler(int button, int state, int x, int y);

@@ -1,9 +1,3 @@
-// Andrew Correa
-// 60926645
-// acorrea@uci.edu
-
-
-
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -87,17 +81,20 @@ void display(void)
 	if (running_mode == andrew)
 	{
 		// Draw the ground floor.
-		glColor3f(0,1,0);
+		glColor3f(0,0.7,0);
 		glBegin(GL_QUADS);
 			glVertex3f(pD.farPlane, Bouncer::FLOOR, pD.farPlane);
 			glVertex3f(-pD.farPlane, Bouncer::FLOOR, pD.farPlane);
 			glVertex3f(-pD.farPlane, Bouncer::FLOOR, -pD.farPlane);
 			glVertex3f(pD.farPlane, Bouncer::FLOOR, -pD.farPlane);
 		glEnd();
+
 		bouncer->draw();
 	}
 	else
-		drawCube();
+	{
+		moveSpinnerRevolver();
+	}
 
 	glutSwapBuffers();
 }
@@ -112,7 +109,10 @@ void initDisplay()
 	pD.fieldOfView = 45.0;
 	pD.aspect      = (float)IMAGE_WIDTH/IMAGE_HEIGHT;
 	pD.nearPlane   = 0.1;
-	pD.farPlane    = 500.0;
+	if (running_mode == andrew)
+		pD.farPlane = 500.0;
+	else
+		pD.farPlane = 50.0;
 
 	// setup context
 	glMatrixMode(GL_PROJECTION);
@@ -145,7 +145,6 @@ void initDisplay()
 
 int main(int argc, char **argv)
 {
-	if (argc > 1) printf("2nd param: %s\n", argv[1]);
 
 	//signal(SIGHUP, cleanup);
 	// Set up which demo we're going to run:
@@ -156,6 +155,7 @@ int main(int argc, char **argv)
 		current_pos[0] = 0;
 		current_pos[1] = 0;
 		current_pos[2] = -20;
+		bouncer = new Bouncer();
 	}
 	else
 	{
@@ -164,14 +164,10 @@ int main(int argc, char **argv)
 		current_pos[0] = 0;
 		current_pos[1] = 0;
 		current_pos[2] = 0;
+		bouncer = NULL;
 	}
 
 	glutInit(&argc, argv);
-
-	if (running_mode == andrew)
-		bouncer = new Bouncer();
-	else
-		bouncer = NULL;
 
 	srand(time(NULL));
 

@@ -14,7 +14,6 @@
 #else
 #include <GL/gl.h>
 #endif
-
 #include <stdio.h>
 #include "debug.h"
 #include "geometry.h"
@@ -144,3 +143,4 @@ void printMult(Matrix4d* a, Matrix4d* b, Matrix4d* c)
 		printf("[ % 2.1f % 2.1f % 2.1f % 2.1f ]   [ % 2.1f % 2.1f % 2.1f % 2.1f ]   [ % 2.1f % 2.1f % 2.1f % 2.1f ]\n", (*a)[0][3], (*a)[0][7], (*a)[0][11], (*a)[0][15], (*b)[0][3], (*b)[0][7], (*b)[0][11], (*b)[0][15], (*c)[0][3], (*c)[0][7], (*c)[0][11], (*c)[0][15]);
 	}
 }
+
