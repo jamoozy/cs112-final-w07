@@ -13,8 +13,9 @@
 #include "geometry.h"
 #include "debug.h"
 
-const double Bouncer::FLOOR = -5;
-const double Bouncer::G = -.001;
+const double Bouncer::FLOOR = -5;  // y-coord of the floor.
+const double Bouncer::G = -.001;   // gravity.
+const double Bouncer::I = 1/3;     // moment of inertia
 
 Bouncer::Bouncer() : gravity_works(false)
 {
@@ -251,7 +252,8 @@ void Bouncer::collide()
 			double dy = center[1] - vertex[1];
 			double dz = center[2] - vertex[2];
 
-			a_velocity[0] += dz / 1.414;
+			a_velocity[0] += cos(angle[1]) * dz / 1.414;
+			a_velocity[2] += sin(angle[1]) * dz / 1.414;
 			velocity[1] *= -(dy / 1.414);
 			velocity[2] += (dz / 40);
 		}
@@ -262,7 +264,8 @@ void Bouncer::collide()
 			double dx = center[0] - vertex[0];
 			double dy = center[1] - vertex[1];
 
-			a_velocity[1] -= dx / 1.414;
+			a_velocity[1] -= cos(angle[2]) * dx / 1.414;
+			a_velocity[0] -= sin(angle[2]) * dx / 1.414;
 			velocity[1] *= -(dy / 1.414);
 			velocity[0] += (dx / 40);
 		}
@@ -273,9 +276,8 @@ void Bouncer::collide()
 			double dy = center[1] - vertex[1];
 			double dz = center[2] - vertex[2];
 
-			if (debugon) printf("dy: %1.4f\ndz: %1.4f\n", dy, dz);
-
-			a_velocity[2] += dz / 1.414;
+			a_velocity[2] += cos(angle[1]) * dz / 1.414;
+			a_velocity[0] += sin(angle[1]) * dz / 1.414;
 			velocity[1] *= -(dy / 1.414);
 			velocity[2] += (dz / 40);
 
