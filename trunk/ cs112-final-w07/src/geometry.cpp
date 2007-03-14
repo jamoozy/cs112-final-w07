@@ -6,10 +6,6 @@
  *   3D geometry vector operations
  */
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
