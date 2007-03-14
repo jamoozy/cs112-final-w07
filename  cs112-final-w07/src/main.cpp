@@ -1,12 +1,12 @@
-#ifdef _WIN32
-#include <windows.h>
-#endif
 #include "time.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <signal.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>

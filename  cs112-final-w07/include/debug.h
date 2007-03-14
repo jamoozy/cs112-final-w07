@@ -12,6 +12,9 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
