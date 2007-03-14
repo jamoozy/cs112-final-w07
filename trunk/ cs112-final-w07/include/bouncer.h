@@ -15,6 +15,7 @@ class Bouncer
 //		static const double RT2 = 1.414;  // The square root of 2
 		static const double FLOOR;   // Position of the floor (y-coordinate)
 		static const double G;    // Effect of gravity.
+		static const double I;    // moment of inertia.
 
 	private:
 		double colors[6][4];
