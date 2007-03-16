@@ -136,6 +136,7 @@ void Bouncer::rotate(double x, double y)
 
 void Bouncer::start()
 {
+	if (debugon) printf("Angle: [%3.1d, %3.1d, %3.1d]\n", angle[0], angle[1], angle[2]);
 	gravity_works = true;
 }
 
@@ -185,7 +186,7 @@ void Bouncer::collide()
 				in[2] = k;
 
 				multVector(out, m, in);
-//				if (time(0) > 5 + last_time[index]) {
+//				if (debug && time(0) > 5 + last_time[index]) {
 //					printf("%d: Multiplied:\n", index);
 //					printMult(&m, &in, &out);
 //					last_time[index] = time(0);
@@ -194,7 +195,7 @@ void Bouncer::collide()
 
 				if (out[1] < FLOOR)
 				{
-//					if (allow) {
+//					if (debug && allow) {
 //						printf("%2.1f < %d == true\n", out[1], FLOOR);
 //						allow = false;
 //					}
@@ -276,7 +277,7 @@ void Bouncer::collide()
 			double dy = center[1] - vertex[1];
 			double dz = center[2] - vertex[2];
 
-			a_velocity[2] += cos(angle[1]) * dz / 1.414;
+			a_velocity[2] -= cos(angle[1]) * dz / 1.414;
 			a_velocity[0] += sin(angle[1]) * dz / 1.414;
 			velocity[1] *= -(dy / 1.414);
 			velocity[2] += (dz / 40);
@@ -335,6 +336,21 @@ void Bouncer::physics()
 	angle[0] += a_velocity[0];
 	angle[1] += a_velocity[1];
 	angle[2] += a_velocity[2];
+
+	while (angle[0] > 360)
+		angle[0] -= 360;
+	while (angle[0] < 0)
+		angle[0] += 360;
+
+	while (angle[1] > 360)
+		angle[1] -= 360;
+	while (angle[1] < 0)
+		angle[1] += 360;
+
+	while (angle[2] > 360)
+		angle[2] -= 360;
+	while (angle[2] < 0)
+		angle[2] += 360;
 
 	trace(__FILE__,__LINE__,"~Bouncer::phyics()\n",-1);
 }
