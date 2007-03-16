@@ -14,7 +14,7 @@
 #include "inputModule.h"
 #include "bouncer.h"
 #include "debug.h"
-
+#include "cube.h"
 
 
 static int motionMode;
@@ -51,7 +51,7 @@ void readKeyboard(unsigned char key, int x, int y)
 		{
 			current_pos[0] = 0;
 			current_pos[1] = 0;
-			current_pos[2] = -14;
+			current_pos[2] = -10;
 		}
 		return;
 	}
@@ -86,6 +86,24 @@ void readKeyboard(unsigned char key, int x, int y)
 			case  'Q':
 				exit(0);
 				break; 
+			case 'x':
+				moveCube(0.1,0,0);
+				break;
+			case 'X':
+				moveCube(-0.1,0,0);
+				break;
+			case 'y':
+				moveCube(0,0.1,0);
+				break;
+			case 'Y':
+				moveCube(0,-0.1,0);
+				break;
+			case 'z':
+				moveCube(0,0,0.1);
+				break;
+			case 'Z':
+				moveCube(0,0,-0.1);
+				break;
 			case 'r':
 			case 'R':
 				// reset initial view parameters
@@ -235,7 +253,7 @@ void setUserView()
 {
 	glLoadIdentity();
 
+	glTranslatef(current_pos[0], current_pos[1], current_pos[2]);
 	glRotatef(angle2, 1.0, 0.0, 0.0);
 	glRotatef(angle1, 0.0, 1.0, 0.0);
-	glTranslatef(current_pos[0], current_pos[1], current_pos[2]);
 }

@@ -14,6 +14,7 @@ extern int wire;
 #define	Y_COOR		1
 #define	Z_COOR		2
 
+static double cube_offset[3] = {1,1,1};
 
 static float cubeColors[6][4] =
 {
@@ -174,40 +175,40 @@ static float cubeVertexes[6][4][3] =
 static float cubeVertexes1[6][4][3] =
 {
 	{
-		{-0.2, -0.2, -0.2},
-		{-0.2, -0.2, 0.2},
-		{-0.2, 0.2, 0.2},
-		{-0.2, 0.2, -0.2}},
+		{-1.8, -1.8, -1.8},
+		{-1.8, -1.8, -1.3},
+		{-1.8, -1.3, -1.3},
+		{-1.8, -1.3, -1.8}},
 
 	{
-		{0.2, 0.2, 0.2},
-		{0.2, -0.2, 0.2},
-		{0.2, -0.2, -0.2},
-		{0.2, 0.2, -0.2}},
+		{-1.3, -1.3, -1.3},
+		{-1.3, -1.8, -1.3},
+		{-1.3, -1.8, -1.8},
+		{-1.3, -1.3, -1.8}},
 
 	{
-		{-0.2, -0.2, -0.2},
-		{0.2, -0.2, -0.2},
-		{0.2, -0.2, 0.2},
-		{-0.2, -0.2, 0.2}},
+		{-1.8, -1.8, -1.8},
+		{-1.3, -1.8, -1.8},
+		{-1.3, -1.8, -1.3},
+		{-1.8, -1.8, -1.3}},
 
 	{
-		{0.2, 0.2, 0.2},
-		{0.2, 0.2, -0.2},
-		{-0.2, 0.2, -0.2},
-		{-0.2, 0.2, 0.2}},
+		{-1.3, -1.3, -1.3},
+		{-1.3, -1.3, -1.8},
+		{-1.8, -1.3, -1.8},
+		{-1.8, -1.3, -1.3}},
 
 	{
-		{-0.2, -0.2, -0.2},
-		{-0.2, 0.2, -0.2},
-		{0.2, 0.2, -0.2},
-		{0.2, -0.2, -0.2}},
+		{-1.8, -1.8, -1.8},
+		{-1.8, -1.3, -1.8},
+		{-1.3, -1.3, -1.8},
+		{-1.3, -1.8, -1.8}},
 
 	{
-		{0.2, 0.2, 0.2},
-		{-0.2, 0.2, 0.2},
-		{-0.2, -0.2, 0.2},
-		{0.2, -0.2, 0.2}}
+		{-1.3, -1.3, -1.3},
+		{-1.8, -1.3, -1.3},
+		{-1.8, -1.8, -1.3},
+		{-1.3, -1.8, -1.3}}
 };
 
 typedef float Vector3f[3];
@@ -291,35 +292,55 @@ void drawRoom()
 	}
 }
 
+void moveCube(double x, double y, double z)
+{
+	for (int i = 0; i < 6; i++) 
+	{
+		cubeVertexes[i][0][0] += x;
+		cubeVertexes[i][1][0] += x;
+		cubeVertexes[i][2][0] += x;
+		cubeVertexes[i][3][0] += x;
+		cubeVertexes[i][0][1] += y;
+		cubeVertexes[i][1][1] += y;
+		cubeVertexes[i][2][1] += y;
+		cubeVertexes[i][3][1] += y;
+		cubeVertexes[i][0][2] += z;
+		cubeVertexes[i][1][2] += z;
+		cubeVertexes[i][2][2] += z;
+		cubeVertexes[i][3][2] += z;
+	}
+
+}
+
 void drawCube()
 {
 	//-------------------------------------
 	//make the First Cube move randomly
 	//-------------------------------------
-	static bool firstTime = true;
-	if (firstTime)
-	{
-		cubeRandomvector[0] = 0.0;
-		cubeRandomvector[1] = 0.0;
-		cubeRandomvector[2] = 0.2;
+//	static bool firstTime = true;
+//	if (firstTime)
+//	{
+//		cubeRandomvector[0] = -0.01;
+//		cubeRandomvector[1] = 0.02;
+//		cubeRandomvector[2] = 0.03;
+//
+//		/*cubeRandomvector[0] = rangerand(-0.2, 0.2, 10);
+//		  cubeRandomvector[1] = rangerand(-0.2, 0.2, 10);
+//		  cubeRandomvector[2] = rangerand(-0.2, 0.2, 10);*/
+//
+//		firstTime = false;
+//	}
 
-		/*cubeRandomvector[0] = rangerand(-0.2, 0.2, 10);
-		  cubeRandomvector[1] = rangerand(-0.2, 0.2, 10);
-		  cubeRandomvector[2] = rangerand(-0.2, 0.2, 10);*/
-
-		firstTime = false;
-	}
-
-	for (int i = 0; i < 6; i++) 
-	{
-		for (int j=0; j<3; j++)
-		{
-			cubeVertexes[i][0][j] += cubeRandomvector[j];
-			cubeVertexes[i][1][j] += cubeRandomvector[j];
-			cubeVertexes[i][2][j] += cubeRandomvector[j];
-			cubeVertexes[i][3][j] += cubeRandomvector[j];
-		}
-	}
+//	for (int i = 0; i < 6; i++) 
+//	{
+//		for (int j=0; j<3; j++)
+//		{
+//			cubeVertexes[i][0][j] += cubeRandomvector[j];
+//			cubeVertexes[i][1][j] += cubeRandomvector[j];
+//			cubeVertexes[i][2][j] += cubeRandomvector[j];
+//			cubeVertexes[i][3][j] += cubeRandomvector[j];
+//		}
+//	}
 
 	if (!wire) {
 		glDisable(GL_BLEND);
@@ -342,6 +363,7 @@ void drawCube()
 				glEnd();
 			}
 		}
+
 	} else {
 		// set antialiasingand wire-frame rendering mode 
 		glEnable(GL_BLEND);
@@ -378,9 +400,9 @@ void drawCube1()
 	static bool firstTime = true;
 	if (firstTime)
 	{
-		cubeRandomvector1[0] = 0.0;
-		cubeRandomvector1[1] = -0.0;
-		cubeRandomvector1[2] = -0.2;
+		cubeRandomvector1[0] = 0.02;
+		cubeRandomvector1[1] = 0.01;
+		cubeRandomvector1[2] = -0.08;
 
 		firstTime = false;
 	}
@@ -445,9 +467,6 @@ void drawCube1()
 }
 
 
-
-
-
 void drawRevolver()
 {
 	//-------------------------------------
@@ -456,7 +475,7 @@ void drawRevolver()
 	static bool firstTime = true;
 	if (firstTime)
 	{
-		revolverRandomvector[0] = 0.1;
+		revolverRandomvector[0] = 0.01;
 		revolverRandomvector[1] = -0.02;
 		revolverRandomvector[2] = -0.01;
 
@@ -522,7 +541,6 @@ void drawRevolver()
 		}
 	}
 }
-
 
 
 //-------------------------------------------------------------
@@ -698,7 +716,7 @@ int Collide(GLfloat cube1[6][4][3], GLfloat cube2[6][4][3], bool mustBeInTheBox,
 int IsVertexInBox(Vector3f vertex, GLfloat cube[6][4][3], 
 		Vector3i& faceHit, bool mustBeInside)
 {
-	float x=vertex[0],y=vertex[1],z=vertex[2];
+//	float x=vertex[0],y=vertex[1],z=vertex[2];
 	int hitCount=0;
 	//go through six faces of the cube
 	for (int face=BACK; face<=TOP; face++)
