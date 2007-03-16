@@ -18,7 +18,6 @@
 #include "inputModule.h"
 #include "cube.h"
 #include "bouncer.h"
-#include "PLY.h"
 #include "geometry.h"
 
 int window;
