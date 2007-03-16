@@ -19,6 +19,7 @@ extern "C" {
 
 typedef int Vector3i[9];
 
+void moveCube(double x, double y, double z);
 void drawCube();
 void drawCube1();
 void drawRevolver();

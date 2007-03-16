@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 		running_mode = kay;
 		current_pos[0] = 0;
 		current_pos[1] = 0;
-		current_pos[2] = -14;
+		current_pos[2] = -10;
 	}
 
 	glutInit(&argc, argv);
