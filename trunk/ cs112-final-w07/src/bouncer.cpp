@@ -16,7 +16,7 @@
 const double Bouncer::FLOOR = -5;  // y-coord of the floor.
 const double Bouncer::G = -.001;   // gravity.
 const double Bouncer::I = 1/3;     // moment of inertia
-const double Bouncer::MIN_SPEED = -0.002;
+const double Bouncer::MIN_SPEED = -0.001;
 
 Bouncer::Bouncer() : gravity_works(false)
 {
@@ -262,8 +262,8 @@ void Bouncer::collide()
 
 				printf("Adding: [%4.1f, 0, %4.1f]\n", cos(angle[1]) * dz / 1.414, sin(angle[1]) * dz / 1.414);
 
-				a_velocity[0] += cos(angle[1]) * dz / 1.414;
-				a_velocity[2] += sin(angle[1]) * dz / 1.414;
+				a_velocity[0] += dz / 1.414;
+//				a_velocity[2] += sin(angle[1]) * dz / 1.414;
 				velocity[1] *= -(dy / 1.414);
 				velocity[2] += (dz / 40);
 			}
@@ -293,8 +293,9 @@ void Bouncer::collide()
 				double dx = center[0] - vertex[0];
 				double dy = center[1] - vertex[1];
 
-				a_velocity[1] -= cos(angle[2]) * dx / 1.414;
-				a_velocity[0] -= sin(angle[2]) * dx / 1.414;
+				a_velocity[1] -= dx / 1.414;
+//				a_velocity[1] -= dx / 1.414;
+//				a_velocity[0] -= sin(angle[2]) * dx / 1.414;
 				velocity[1] *= -(dy / 1.414);
 				velocity[0] += (dx / 40);
 			}
@@ -324,8 +325,8 @@ void Bouncer::collide()
 				double dy = center[1] - vertex[1];
 				double dz = center[2] - vertex[2];
 
-				a_velocity[2] -= cos(angle[1]) * dz / 1.414;
-				a_velocity[0] += sin(angle[1]) * dz / 1.414;
+//				a_velocity[2] -= sin(angle[1]) * dz / 1.414;
+				a_velocity[0] += dz / 1.414;
 				velocity[1] *= -(dy / 1.414);
 				velocity[2] += (dz / 40);
 			}
@@ -401,6 +402,7 @@ void Bouncer::physics()
 	angle[1] += a_velocity[1];
 	angle[2] += a_velocity[2];
 
+	// Put the angles in range [0,360]
 	while (angle[0] > 360)
 		angle[0] -= 360;
 	while (angle[0] < 0)
