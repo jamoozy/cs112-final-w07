@@ -16,6 +16,7 @@
 const double Bouncer::FLOOR = -5;  // y-coord of the floor.
 const double Bouncer::G = -.001;   // gravity.
 const double Bouncer::I = 1/3;     // moment of inertia
+const double Bouncer::MIN_SPEED = -0.002;
 
 Bouncer::Bouncer() : gravity_works(false)
 {
@@ -136,12 +137,14 @@ void Bouncer::rotate(double x, double y)
 
 void Bouncer::start()
 {
-	if (debugon) printf("Angle: [%3.1d, %3.1d, %3.1d]\n", angle[0], angle[1], angle[2]);
+	trace(__FILE__,__LINE__,"Bouncer::start()\n",0);
+	if (debugon) printf("Angle: [%3.1f, %3.1f, %3.1f]\n", angle[0], angle[1], angle[2]);
 	gravity_works = true;
 }
 
 void Bouncer::stop()
 {
+	trace(__FILE__,__LINE__,"Bouncer::stop()\n",1);
 	gravity_works = false;
 
 	velocity[0] = 0;
@@ -151,10 +154,12 @@ void Bouncer::stop()
 	a_velocity[0] = 0;
 	a_velocity[1] = 0;
 	a_velocity[2] = 0;
+	trace(__FILE__,__LINE__,"~Bouncer::stop()\n",-1);
 }
 
 bool Bouncer::running()
 {
+	trace(__FILE__,__LINE__,"Bouncer::running()\n",0);
 	return gravity_works;
 }
 
@@ -209,11 +214,11 @@ void Bouncer::collide()
 //	if (pos[1] - 1 < FLOOR)
 //		velocity[1] = -velocity[1];
 
-	if (collisions) printf("%d collisions\n", collisions);
+	if (debug && collisions) printf("%d collisions\n", collisions);
 	if (collisions == 4)
 	{
 		if (debugon) printf("y-speed: %.4f\n", velocity[1]);
-		if (-0.005 < velocity[1]) {
+		if (Bouncer::MIN_SPEED < velocity[1]) {
 			stop();
 			pos[1] = Bouncer::FLOOR + 1;
 		} else
@@ -250,37 +255,96 @@ void Bouncer::collide()
 		{
 			debug("Along x-axis.\n");
 
-			double dy = center[1] - vertex[1];
-			double dz = center[2] - vertex[2];
+			if (velocity[1] < Bouncer::MIN_SPEED)
+			{
+				double dy = center[1] - vertex[1];
+				double dz = center[2] - vertex[2];
 
-			a_velocity[0] += cos(angle[1]) * dz / 1.414;
-			a_velocity[2] += sin(angle[1]) * dz / 1.414;
-			velocity[1] *= -(dy / 1.414);
-			velocity[2] += (dz / 40);
+				printf("Adding: [%4.1f, 0, %4.1f]\n", cos(angle[1]) * dz / 1.414, sin(angle[1]) * dz / 1.414);
+
+				a_velocity[0] += cos(angle[1]) * dz / 1.414;
+				a_velocity[2] += sin(angle[1]) * dz / 1.414;
+				velocity[1] *= -(dy / 1.414);
+				velocity[2] += (dz / 40);
+			}
+			else
+			{
+				velocity[0] = velocity[1] = velocity[2] = 0;
+				a_velocity[0] = a_velocity[1] = a_velocity[2] = 0;
+				pos[1] = Bouncer::FLOOR + 1;
+				if (angle[0] > 315)
+					angle[0] = 0;
+				else if (angle[0] > 225)
+					angle[0] = 270;
+				else if (angle[0] > 135)
+					angle[0] = 180;
+				else if (angle[0] > 45)
+					angle[0] = 90;
+				else
+					angle[0] = 0;
+			}
 		}
 		else if (vertexes[v[0]][1] != vertexes[v[1]][1])
 		{
 			debug("Along y-axis.\n");
 
-			double dx = center[0] - vertex[0];
-			double dy = center[1] - vertex[1];
+			if (velocity[1] < Bouncer::MIN_SPEED)
+			{
+				double dx = center[0] - vertex[0];
+				double dy = center[1] - vertex[1];
 
-			a_velocity[1] -= cos(angle[2]) * dx / 1.414;
-			a_velocity[0] -= sin(angle[2]) * dx / 1.414;
-			velocity[1] *= -(dy / 1.414);
-			velocity[0] += (dx / 40);
+				a_velocity[1] -= cos(angle[2]) * dx / 1.414;
+				a_velocity[0] -= sin(angle[2]) * dx / 1.414;
+				velocity[1] *= -(dy / 1.414);
+				velocity[0] += (dx / 40);
+			}
+			else
+			{
+				velocity[0] = velocity[1] = velocity[2] = 0;
+				a_velocity[0] = a_velocity[1] = a_velocity[2] = 0;
+				pos[1] = Bouncer::FLOOR + 1;
+				if (angle[1] > 315)
+					angle[1] = 0;
+				else if (angle[1] > 225)
+					angle[1] = 270;
+				else if (angle[1] > 135)
+					angle[1] = 180;
+				else if (angle[1] > 45)
+					angle[1] = 90;
+				else
+					angle[1] = 0;
+			}
 		}
 		else if (vertexes[v[0]][2] != vertexes[v[1]][2])
 		{
 			debug("Along z-axis.\n");
 
-			double dy = center[1] - vertex[1];
-			double dz = center[2] - vertex[2];
+			if (velocity[1] < Bouncer::MIN_SPEED)
+			{
+				double dy = center[1] - vertex[1];
+				double dz = center[2] - vertex[2];
 
-			a_velocity[2] -= cos(angle[1]) * dz / 1.414;
-			a_velocity[0] += sin(angle[1]) * dz / 1.414;
-			velocity[1] *= -(dy / 1.414);
-			velocity[2] += (dz / 40);
+				a_velocity[2] -= cos(angle[1]) * dz / 1.414;
+				a_velocity[0] += sin(angle[1]) * dz / 1.414;
+				velocity[1] *= -(dy / 1.414);
+				velocity[2] += (dz / 40);
+			}
+			else
+			{
+				velocity[0] = velocity[1] = velocity[2] = 0;
+				a_velocity[0] = a_velocity[1] = a_velocity[2] = 0;
+				pos[1] = Bouncer::FLOOR + 1;
+				if (angle[2] > 315)
+					angle[2] = 0;
+				else if (angle[2] > 225)
+					angle[2] = 270;
+				else if (angle[2] > 135)
+					angle[2] = 180;
+				else if (angle[2] > 45)
+					angle[2] = 90;
+				else
+					angle[2] = 0;
+			}
 
 			if (debugon) printf("a-v{z}: %1.4f\nangle: %1.4f\n", a_velocity[2], angle[2]);
 		}
@@ -359,6 +423,7 @@ void Bouncer::physics()
 // draw each cube face as an individual polygon
 void Bouncer::placeVertexes()
 {
+	trace(__FILE__,__LINE__,"Bouncer::placeVertexes()\n",1);
 	glBegin(GL_QUADS);
 	for (int i = 0; i < 6; i++)
 	{
@@ -369,6 +434,7 @@ void Bouncer::placeVertexes()
 		glVertex3dv(&vertexes[faces[i][3]][0]);
 	}
 	glEnd();
+	trace(__FILE__,__LINE__,"~Bouncer::placeVertexes()\n",-1);
 }
 
 

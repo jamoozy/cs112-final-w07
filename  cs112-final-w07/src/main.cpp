@@ -149,24 +149,22 @@ int main(int argc, char **argv)
 	// Set up which demo we're going to run:
 	if (argc > 1 && argv[1][0] == '-' && argv[1][1] == 'a')
 	{
-		printf("Running mode is ANDREW\n");
 		running_mode = andrew;
 		current_pos[0] = 0;
 		current_pos[1] = 0;
-		current_pos[2] = -20;
-		bouncer = new Bouncer();
+		current_pos[2] = -34;
 	}
 	else
 	{
-		printf("Running mode is KAY\n");
 		running_mode = kay;
 		current_pos[0] = 0;
 		current_pos[1] = 0;
-		current_pos[2] = 0;
-		bouncer = NULL;
+		current_pos[2] = -14;
 	}
 
 	glutInit(&argc, argv);
+
+	bouncer = new Bouncer();
 
 	srand(time(NULL));
 

@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-#define IMAGE_WIDTH  512
-#define IMAGE_HEIGHT 512
+#define IMAGE_WIDTH  800
+#define IMAGE_HEIGHT 600
 
 typedef struct{
 	float fieldOfView;

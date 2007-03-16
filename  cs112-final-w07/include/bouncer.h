@@ -16,6 +16,7 @@ class Bouncer
 		static const double FLOOR;   // Position of the floor (y-coordinate)
 		static const double G;    // Effect of gravity.
 		static const double I;    // moment of inertia.
+		static const double MIN_SPEED;
 
 	private:
 		double colors[6][4];

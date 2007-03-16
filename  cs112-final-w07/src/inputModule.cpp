@@ -1,12 +1,21 @@
+//#############################################
+//  Khoa Dang 17638455
+//  CS112 - Winter 2007
+//  Final Project
+//#############################################
+
+#ifdef WIN32
+#include <windows.h>
+#endif
 #include <stdio.h>
-#include <math.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <math.h>
 #include "inputModule.h"
 #include "bouncer.h"
 #include "debug.h"
 
-/* This File contains the KeyBoard and mouse handling routines */
+
 
 static int motionMode;
 static int startX;
@@ -16,6 +25,7 @@ static GLfloat angle1 = 0;    /* in degrees */
 static GLfloat angle2 = 0;   /* in degrees */
 
 GLfloat current_pos[] = {0.0, 0.0, 0.0};
+GLfloat rcurrent_pos[] = {5.0, 5.0, 5.0};
 GLfloat move_speed = 0.25;
 GLfloat rot_speed = 0.25;
 
@@ -28,10 +38,27 @@ extern bool running_mode;
 
 void readKeyboard(unsigned char key, int x, int y)
 {
+	if (key == 'm' || key == 'M')
+	{
+		running_mode = !running_mode;
+		if (running_mode == andrew)
+		{
+			current_pos[0] = 0;
+			current_pos[1] = 0;
+			current_pos[2] = -34;
+		}
+		else
+		{
+			current_pos[0] = 0;
+			current_pos[1] = 0;
+			current_pos[2] = -14;
+		}
+		return;
+	}
+
 	if (running_mode == kay)
 	{
 		float a1 = angle1 * M_PI / 180.0f;
-//		float a2 = angle2 * M_PI / 180.0f;
 		switch(key)
 		{
 			case 'w':
@@ -62,7 +89,7 @@ void readKeyboard(unsigned char key, int x, int y)
 			case 'r':
 			case 'R':
 				// reset initial view parameters
-				printf("pos:[%2.1f,%2.1f,%2.1f]\n", current_pos[0], current_pos[1], current_pos[2]);
+				if (debugon) printf("pos:[%2.1f,%2.1f,%2.1f]\n", current_pos[0], current_pos[1], current_pos[2]);
 				angle1 = 0;
 				angle2 = 0;
 				current_pos[0] = 0.0;
