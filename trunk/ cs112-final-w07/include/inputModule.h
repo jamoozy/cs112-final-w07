@@ -15,7 +15,9 @@ extern GLfloat current_pos[];
 extern "C" {
 #endif
   
-//static GLfloat angle1 = 0;    /* in degrees */
+static GLfloat rangle = 20;    /* in degrees */
+static GLfloat rangle2 = 30;   /* in degrees */
+
 
 #define andrew true
 #define kay false

@@ -17,15 +17,23 @@
 extern "C" {
 #endif
 
+typedef int Vector3i[9];
+
 void drawCube();
+void drawCube1();
 void drawRevolver();
 void drawRoom();
 
-bool IsVertexInBox(Vector3f vertex, GLfloat cube[6][4][3]);
-bool Collide(GLfloat cube1[6][4][3], GLfloat cube2[6][4][3], bool mustBeInTheBox);
-void CheckAllCollisions();
+int IsVertexInBox(Vector3f vertex, GLfloat cube[6][4][3], 
+				   Vector3i& faceHit, bool mustBeInside);
+int Collide(GLfloat cube1[6][4][3], GLfloat cube2[6][4][3], bool mustBeInTheBox,
+			Vector3i& faceHit);
+bool CheckAllCollisions(GLfloat TMPcubeVertexes[6][4][3], 
+						GLfloat TMPcubeVertexes1[6][4][3], 
+						GLfloat TMPrevolverVertexes[6][4][3], 
+						GLfloat TMProomVertexes[6][4][3]);
 void moveSpinnerRevolver();
-void InvertMoveVector(Vector3f* vector);
+void InvertMoveVector(Vector3f& vector, int hitCount, Vector3i faceHit);
 
 #ifdef __cplusplus
 }
