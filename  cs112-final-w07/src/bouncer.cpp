@@ -214,7 +214,7 @@ void Bouncer::collide()
 //	if (pos[1] - 1 < FLOOR)
 //		velocity[1] = -velocity[1];
 
-	if (debug && collisions) printf("%d collisions\n", collisions);
+	if (debugon && collisions) printf("%d collisions\n", collisions);
 	if (collisions == 4)
 	{
 		if (debugon) printf("y-speed: %.4f\n", velocity[1]);
